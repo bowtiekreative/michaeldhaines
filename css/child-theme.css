@@ -1,0 +1,11 @@
+/*
+Theme Name: Stack Child
+Theme URI: http://www.tommusrhodus.com/stack-wordpress-theme
+Description: Child theme for the Stack theme
+Author: <a href="http://www.tommusrhodus.com">Tom Rhodes</a>
+Author URI: http://www.tommusrhodus.com
+Template: stack
+Version: 10.0.0
+*/
+
+@import url('../stack/style.css');
