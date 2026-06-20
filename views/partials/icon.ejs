@@ -1,0 +1,12 @@
+<%
+/* Inline SVG icon by name. Pass { name: 'spark' } when including this partial. */
+var icons = {
+  briefcase: '<path d="M3 7h18v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7Z"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 12h18"/>',
+  spark: '<path d="M12 2v6"/><path d="M12 16v6"/><path d="m4.9 4.9 4.2 4.2"/><path d="m14.9 14.9 4.2 4.2"/><path d="M2 12h6"/><path d="M16 12h6"/><path d="m4.9 19.1 4.2-4.2"/><path d="m14.9 9.1 4.2-4.2"/>',
+  people: '<circle cx="9" cy="7" r="3"/><path d="M2 21v-1a6 6 0 0 1 12 0v1"/><path d="M16 3.5a3 3 0 0 1 0 7"/><path d="M22 21v-1a6 6 0 0 0-4-5.6"/>',
+  check: '<path d="m20 6-11 11-5-5"/>',
+  quote: '<path d="M7 7h4v6a4 4 0 0 1-4 4"/><path d="M14 7h4v6a4 4 0 0 1-4 4"/>',
+  arrow: '<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>'
+};
+var n = (typeof name !== 'undefined' && icons[name]) ? icons[name] : icons.check;
+%><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><%- n %></svg>

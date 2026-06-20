@@ -1,0 +1,21 @@
+<%
+/* Inner-page hero. Expects: hero = { title, subtitle, image } */
+var bg = (typeof hero !== 'undefined' && hero.image) ? hero.image : site.ogImage;
+%>
+<section class="page-hero" style="--hero-image: url('<%= bg %>')">
+  <div class="page-hero-overlay"></div>
+  <div class="container page-hero-inner">
+    <% if (typeof breadcrumb !== 'undefined' && breadcrumb && breadcrumb.length) { %>
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <ol>
+          <li><a href="/">Home</a></li>
+          <% breadcrumb.forEach(function(b, i){ %>
+            <li<%= i === breadcrumb.length - 1 ? ' aria-current="page"' : '' %>><a href="<%= b.href %>"><%= b.name %></a></li>
+          <% }); %>
+        </ol>
+      </nav>
+    <% } %>
+    <h1><%= hero.title %></h1>
+    <% if (hero.subtitle) { %><p class="page-hero-sub"><%= hero.subtitle %></p><% } %>
+  </div>
+</section>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><%- include('partials/head') %></head>
+<body>
+  <%- include('partials/header') %>
+  <main id="main">
+    <%- include('partials/page-hero', { hero: page.hero }) %>
+
+    <section class="section">
+      <div class="container narrow">
+        <div class="testimonial-list">
+          <% testimonials.forEach(function(t){ %>
+            <figure class="testimonial-quote">
+              <div class="testimonial-mark"><%- include('partials/icon', { name: 'quote' }) %></div>
+              <blockquote><%= t.quote %></blockquote>
+              <figcaption>
+                <span class="t-author"><%= t.author %></span>
+                <% if (t.title) { %><span class="t-title"><%= t.title %></span><% } %>
+              </figcaption>
+            </figure>
+          <% }); %>
+        </div>
+      </div>
+    </section>
+
+    <%- include('partials/cta', { cta: {
+      title: 'Add your name to this list',
+      text: 'Book Michael for your next event or staff training and see the difference for yourself.',
+      ctaLabel: 'Book a Free Consultation',
+      ctaHref: site.calendly
+    } }) %>
+  </main>
+  <%- include('partials/footer') %>
+</body>
+</html>

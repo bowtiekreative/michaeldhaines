@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><%- include('partials/head') %></head>
+<body>
+  <%- include('partials/header') %>
+  <main id="main">
+    <%- include('partials/page-hero', { hero: about.hero }) %>
+
+    <section class="section">
+      <div class="container narrow">
+        <p class="lede"><%= about.intro %></p>
+        <% about.sections.forEach(function(s){ %>
+          <div class="prose-block">
+            <h2><%= s.title %></h2>
+            <p><%= s.body %></p>
+          </div>
+        <% }); %>
+      </div>
+    </section>
+
+    <section class="section section--muted">
+      <div class="container">
+        <div class="section-head section-head--center">
+          <h2>In their words</h2>
+        </div>
+        <div class="testimonial-grid">
+          <% about.quotes.forEach(function(q){ %>
+            <figure class="testimonial-card">
+              <blockquote><%= q.quote %></blockquote>
+              <figcaption>
+                <span class="t-author"><%= q.author %></span>
+                <% if (q.title) { %><span class="t-title"><%= q.title %></span><% } %>
+              </figcaption>
+            </figure>
+          <% }); %>
+        </div>
+      </div>
+    </section>
+
+    <%- include('partials/cta', { cta: {
+      title: 'Bring Michael to your team',
+      text: 'Book a free consultation and find out how serving the challenged customer grows your business.',
+      ctaLabel: 'Book a Free Consultation',
+      ctaHref: site.calendly
+    } }) %>
+  </main>
+  <%- include('partials/footer') %>
+</body>
+</html>

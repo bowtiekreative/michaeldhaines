@@ -1,0 +1,33 @@
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header" id="start">
+  <div class="container header-inner">
+    <a class="brand" href="/" aria-label="<%= site.name %> — home">
+      <img src="<%= site.logo %>" alt="" width="48" height="31" class="brand-mark">
+      <span class="brand-text">
+        <span class="brand-name"><%= site.name %></span>
+        <span class="brand-role"><%= site.role %></span>
+      </span>
+    </a>
+
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="primaryNav" aria-label="Open menu">
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+    </button>
+
+    <nav class="primary-nav" id="primaryNav" aria-label="Primary">
+      <ul>
+        <% nav.forEach(function(item){ %>
+          <li>
+            <a href="<%= item.href %>"
+               class="<%= (currentPath === item.href || (item.href !== '/' && currentPath.indexOf(item.href) === 0)) ? 'is-active' : '' %>"
+               <%= (currentPath === item.href) ? 'aria-current="page"' : '' %>><%= item.label %></a>
+          </li>
+        <% }); %>
+        <li class="nav-cta">
+          <a href="<%= site.calendly %>" class="btn btn--primary btn--sm" target="_blank" rel="noopener">Book a Consultation</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>

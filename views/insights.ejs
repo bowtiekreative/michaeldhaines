@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><%- include('partials/head') %></head>
+<body>
+  <%- include('partials/header') %>
+  <main id="main">
+    <%- include('partials/page-hero', { hero: {
+      title: 'Insights',
+      subtitle: 'Articles and talks on serving the challenged customer.',
+      image: site.ogImage
+    } }) %>
+
+    <section class="section">
+      <div class="container">
+        <div class="post-grid">
+          <% posts.forEach(function(p){ %>
+            <article class="post-card">
+              <time datetime="<%= (p.date instanceof Date ? p.date.toISOString().slice(0,10) : p.date) %>" class="post-date">
+                <%= new Date(p.date).toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' }) %>
+              </time>
+              <h2><a href="/insights/<%= p.slug %>"><%= p.title %></a></h2>
+              <p><%= p.excerpt %></p>
+              <a class="text-link" href="/insights/<%= p.slug %>">Read more <%- include('partials/icon', { name: 'arrow' }) %></a>
+            </article>
+          <% }); %>
+        </div>
+      </div>
+    </section>
+  </main>
+  <%- include('partials/footer') %>
+</body>
+</html>

@@ -1,141 +1,83 @@
-# Michael D. Haines - Website Archive
+# Michael D. Haines — michaeldhaines.ca
 
-## Overview
+A modern, fast, accessible rebuild of [michaeldhaines.ca](https://michaeldhaines.ca)
+— keynote speaker & customer service consultant Michael D. Haines, who helps
+organizations serve customers with challenges.
 
-**Site:** [https://michaeldhaines.ca/](https://michaeldhaines.ca/)
-**Owner:** Michael D. Haines — Customer Service Consultant  
-**Location:** Kelowna, British Columbia, Canada  
-**Tagline:** Challenge yourself and be great.
+> **Challenge yourself and be great.**
 
-This directory contains a complete archive of the Michael D. Haines website, including all pages, posts, media assets, CSS, and API data.
+The original WordPress site (Stack theme + WooCommerce + Elementor) was rebuilt
+as a server-rendered Node.js application. **All client copy is preserved
+verbatim** — only the presentation, performance, SEO, and accessibility were
+modernized.
 
-## About Michael D. Haines
+## Stack
 
-Michael D. Haines is a keynote speaker, business consultant, and author who helps organizations improve customer service for people with disabilities (which he calls "challenges"). Born with cerebral palsy, he uses an electric wheelchair and assistive speech technology. He serves businesses across Canada, helping them understand that serving customers with challenges is both a moral imperative and a profitable business strategy.
+- **Express + EJS** — server-rendered for SEO and speed.
+- **MySQL via `mysql2`** — pure-JS driver (installs cleanly on restricted shared
+  hosts; no native build tools required).
+- **Helmet + compression + rate-limit** — security headers, gzip, form throttling.
+- `src/content.js` is the **single source of truth**, seeded into MySQL on boot.
+- **Content API** (`/api`, token-protected) for live edits without a redeploy.
 
-**Key offerings:**
-- Keynote speaking engagements
-- Staff training sessions on inclusive customer service
-- Business consulting on serving the disability market
-- E-book: *How to Serve Customers with Disabilities*
+## Quick start
 
-## Site Structure
-
-```
-michaeldhaines/
-├── README.md           ← This file
-├── architecture.md     ← Site architecture & navigation
-├── styles.md           ← Design system, colors, fonts, CSS
-├── media.md            ← Full media inventory
-├── index.html          ← Homepage HTML
-├── pages/
-│   ├── home.md         ← Home page content
-│   ├── about.md        ← About Michael page
-│   ├── testimonials.md ← Testimonials page
-│   └── contact.md      ← Contact page
-├── images/             ← All site images (23 files)
-├── css/                ← All compiled stylesheets
-│   ├── theme-compiled.css  ← Main theme CSS (WP-LESS compiled)
-│   ├── child-theme.css     ← Stack Child theme overrides
-│   ├── bootstrap.css       ← Bootstrap framework
-│   ├── icons.css           ← Icon styles
-│   ├── iconsmind.css       ← Iconsmind icon set
-│   ├── plugins.css         ← Plugin styles
-│   ├── cf7.css             ← Contact Form 7
-│   ├── woocommerce.css     ← WooCommerce
-│   ├── woocommerce-layout.css
-│   └── wc-blocks.css       ← WooCommerce blocks
-└── api/                ← Raw WP REST API responses (JSON)
-    ├── wp-v2.json              ← API index
-    ├── wp-v2-pages-raw.json    ← All pages
-    ├── wp-v2-posts-raw.json    ← All posts
-    ├── wp-v2-media-raw.json    ← All media items
-    ├── wp-v2-themes.json       ← Theme info
-    └── homepage.html           ← Homepage HTML
+```bash
+cp .env.example .env      # set DB credentials + ADMIN_PASSWORD
+npm install
+npm run seed              # create tables + load content (optional; boot also seeds)
+npm start                 # http://localhost:3000
 ```
 
-## Pages (4 total)
+The server is **resilient**: it binds the HTTP port first, then connects to the
+DB with exponential-backoff retries. If the DB is unavailable it serves content
+straight from `src/content.js` (never crash-loops). Check `/healthz` for DB
+status and content counts.
 
-1. **Home** - Hero section with booking CTA, video embed, "Disability Fallacy" philosophy, three core pillars (Challenge Your Business / Yourself / Others), "Why Michael" section
-2. **About Michael** - Biography, over 20 years speaking experience, born with cerebral palsy, testimonial quotes
-3. **Testimonials** - Four full testimonials from Don Campbell, Ian MacLeod, Tyson Ralph, Paul F. Bickert
-4. **Contact** - Contact form (CF7) for booking speaking engagements
+## Pages & routes
 
-## Posts (5 total)
+| Route | Page |
+|-------|------|
+| `/` | Home — hero, stats, video, the Disability Fallacy, three pillars, why Michael, testimonials, FAQ, CTA |
+| `/about` | About Michael — biography & quotes |
+| `/testimonials` | Full client testimonials |
+| `/insights` · `/insights/:slug` | Articles & talks (the original blog posts, verbatim) |
+| `/contact` | Contact form (honeypot + rate-limited) + Calendly booking |
+| `/privacy` | Privacy policy |
+| `/robots.txt` · `/sitemap.xml` · `/healthz` | SEO + ops |
+| `/api/*` | Content API — see [`docs/CONTENT-API.md`](docs/CONTENT-API.md) |
 
-The blog contains posts in categories: Uncategorized, Speech that was delivered. Topics covered include Michael's personal story, statistics on disability employment, tips for serving customers with challenges, business case for inclusion, and real-world service examples.
+## Content model
 
-## Key Statistics
+Edit `src/content.js` and bump `contentVersion` to re-seed on the next deploy.
+Once the Content API makes a live edit, a `content_source = api` flag suppresses
+the version-gated reseed so live edits aren't clobbered. `npm run seed` forces a
+full reset back to the code values.
 
-| Metric | Value |
-|--------|-------|
-| Canadians with disabilities | 3.8M (13.7%) |
-| Canadians affected by disability (incl. family) | 53% |
-| Unemployment rate for disabled Canadians | 50-70% |
-| Disabled graduates never employed | 450,000 (270,000 with post-secondary) |
-| Absenteeism reduction (inclusive hiring example) | 85% lower |
-| Turnover reduction (inclusive hiring example) | 38% vs 100% norm |
+## What was improved (integrity kept)
 
-## Tech Stack
+- **Design system** — purple (`#554c78`, the original brand color) with a warm
+  coral accent, fluid type, modern cards, sticky header.
+- **SEO** — per-route titles/descriptions, canonical, Open Graph + Twitter cards,
+  JSON-LD (`ProfessionalService`, `BreadcrumbList`, `FAQPage`, `Article`),
+  `robots.txt`, generated `sitemap.xml`.
+- **Accessibility (WCAG)** — zoom never disabled, visible focus outlines,
+  skip-link, semantic landmarks, ARIA on the nav toggle, `prefers-reduced-motion`,
+  4.5:1+ contrast.
+- **Performance** — gzip, lazy-loaded media, privacy-enhanced YouTube embed,
+  cache-busted assets (`?v=<mtime>`).
+- **Self-serve editing** — token-protected Content API.
 
-- **CMS:** WordPress 6.x
-- **Theme:** Stack v10.5.15 (TommusRhodus) with child theme
-- **E-commerce:** WooCommerce 10.7.0
-- **Forms:** Contact Form 7 6.1.2
-- **CSS Preprocessor:** WP-LESS (LESS to CSS compilation)
-- **CSS Framework:** Bootstrap
-- **CDN/Frontend:** Cloudflare (bot protection active)
-- **Google Services:** reCAPTCHA v3
-- **Video:** YouTube (ID: MtfGYrqxvVE)
-- **Booking:** Calendly (calendly.com/mikehaines/30min)
-- **Icons:** Iconsmind, Socicon, Stack Interface icons
+## Deployment (Hostinger / shared hosts)
 
-## Directory Structure
+- Use `DB_HOST=127.0.0.1` (not `localhost`) — `db.js` rewrites it anyway to avoid
+  the IPv6 `::1` access-denied gotcha.
+- Both `server.js` and `app.js` are valid entry points.
+- A `Dockerfile` is included for container hosts.
+- Submit `/sitemap.xml` in Google Search Console after launch.
 
-```
-/opt/data/michaeldhaines/
-├── README.md
-├── architecture.md
-├── styles.md
-├── media.md
-├── index.html
-├── pages/
-│   ├── home.md
-│   ├── about.md
-│   ├── testimonials.md
-│   └── contact.md
-├── images/
-│   ├── 01-logo.png ... 23-woocommerce-placeholder.png
-├── css/
-│   ├── theme-compiled.css
-│   ├── child-theme.css
-│   ├── bootstrap.css
-│   ├── icons.css
-│   ├── iconsmind.css
-│   ├── plugins.css
-│   ├── cf7.css
-│   ├── woocommerce.css
-│   ├── woocommerce-layout.css
-│   └── wc-blocks.css
-└── api/
-    ├── wp-v2.json
-    ├── wp-v2-pages-raw.json
-    ├── wp-v2-posts-raw.json
-    ├── wp-v2-media-raw.json
-    ├── wp-v2-themes.json
-    └── homepage.html
-```
+## Source archive
 
-## API Endpoints Used
-
-- `wp/v2/pages` - 4 pages (Home, About, Testimonials, Contact)
-- `wp/v2/posts` - 5 blog posts (Uncategorized, Speech that was delivered)
-- `wp/v2/media` - 23 media items (images, docs, logs)
-- `wp/v2/categories` - 7 categories
-- `wp/v2/tags` - 4 tags
-- `wp/v2/themes` - Stack v10.5.15 + Stack Child
-- Various WooCommerce, Jetpack, CF7, and Litespeed namespaces
-
-## Archive Date
-
-**Archived:** June 20, 2026
+The original WordPress scrape is preserved for reference:
+`architecture.md`, `styles.md`, `media.md`, `pages/`, `api/`, `css/`, and the
+original `index.html`.

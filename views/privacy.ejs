@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><%- include('partials/head') %></head>
+<body>
+  <%- include('partials/header') %>
+  <main id="main">
+    <%- include('partials/page-hero', { hero: { title: 'Privacy Policy', subtitle: '', image: site.ogImage } }) %>
+    <section class="section">
+      <div class="container narrow article-body">
+        <p>This privacy policy explains how <%= site.name %> handles information collected through this website.</p>
+
+        <h2>Information we collect</h2>
+        <p>When you submit the contact form, we collect the name, email address, and message you provide so that we can respond to your inquiry. We do not sell or share this information with third parties.</p>
+
+        <h2>Booking</h2>
+        <p>Consultations are scheduled through Calendly, a third-party service. When you book, your details are handled according to Calendly’s own privacy policy.</p>
+
+        <h2>Embedded content</h2>
+        <p>This site embeds video from YouTube using its privacy-enhanced mode. Embedded content may collect data about your interaction with it.</p>
+
+        <h2>Contact</h2>
+        <p>Questions about this policy? Email <a href="mailto:<%= site.email %>"><%= site.email %></a>.</p>
+      </div>
+    </section>
+  </main>
+  <%- include('partials/footer') %>
+</body>
+</html>

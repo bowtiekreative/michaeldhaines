@@ -1,0 +1,12 @@
+<%
+/* Call-to-action band. Expects: cta = { title, text, ctaLabel, ctaHref } */
+%>
+<section class="cta-band">
+  <div class="container cta-band-inner">
+    <div>
+      <h2><%= cta.title %></h2>
+      <p><%= cta.text %></p>
+    </div>
+    <a href="<%= cta.ctaHref %>" class="btn btn--accent btn--lg" target="_blank" rel="noopener"><%= cta.ctaLabel %></a>
+  </div>
+</section>

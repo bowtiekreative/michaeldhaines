@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('partials/head') %>
+  <!-- FAQ schema on home -->
+  <script type="application/ld+json">
+  <%- JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(f => ({
+      "@type": "Question",
+      "name": f.question,
+      "acceptedAnswer": { "@type": "Answer", "text": f.answer }
+    }))
+  }) %>
+  </script>
+</head>
+<body>
+  <%- include('partials/header') %>
+  <main id="main">
+
+    <!-- HERO -->
+    <section class="hero" style="--hero-image: url('<%= home.hero.image %>')">
+      <div class="hero-overlay"></div>
+      <div class="container hero-inner">
+        <p class="hero-eyebrow"><%= home.hero.eyebrow %></p>
+        <h1><%= home.hero.title %></h1>
+        <p class="hero-sub"><%= home.hero.subtitle %></p>
+        <div class="hero-actions">
+          <a href="<%= home.hero.ctaHref %>" class="btn btn--accent btn--lg" target="_blank" rel="noopener"><%= home.hero.ctaLabel %></a>
+          <a href="/about" class="btn btn--ghost btn--lg">Meet Michael</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATS -->
+    <section class="stats" aria-label="By the numbers">
+      <div class="container stats-grid">
+        <% home.stats.forEach(function(s){ %>
+          <div class="stat">
+            <span class="stat-value"><%= s.value %></span>
+            <span class="stat-label"><%= s.label %></span>
+          </div>
+        <% }); %>
+      </div>
+    </section>
+
+    <!-- VIDEO -->
+    <section class="section video-section">
+      <div class="container">
+        <div class="section-head section-head--center">
+          <h2><%= home.video.title %></h2>
+          <p class="section-lede"><%= home.video.description %></p>
+        </div>
+        <div class="video-frame">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/<%= home.video.youtubeId %>"
+            title="<%= home.video.title %>"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen></iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- DISABILITY FALLACY -->
+    <section class="section fallacy">
+      <div class="container split">
+        <div class="split-media">
+          <img src="<%= home.fallacy.image %>" alt="Michael D. Haines in his electric wheelchair" loading="lazy" width="600" height="380">
+        </div>
+        <div class="split-text">
+          <h2><%= home.fallacy.title %></h2>
+          <blockquote class="lede-quote">
+            <%- include('partials/icon', { name: 'quote' }) %>
+            <p><%= home.fallacy.quote %></p>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- THREE PILLARS -->
+    <section class="section section--muted">
+      <div class="container">
+        <div class="section-head section-head--center">
+          <h2><%= home.pillarsTitle %></h2>
+          <p class="section-lede"><%= home.pillarsIntro %></p>
+        </div>
+        <div class="pillars-grid">
+          <% pillars.forEach(function(p){ %>
+            <article class="pillar-card">
+              <div class="pillar-icon"><%- include('partials/icon', { name: p.icon }) %></div>
+              <h3><%= p.title %></h3>
+              <p><%= p.body %></p>
+            </article>
+          <% }); %>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHY MICHAEL -->
+    <section class="section why">
+      <div class="container split split--reverse">
+        <div class="split-media">
+          <img src="/images/meeting.jpg" alt="A team meeting in a bright office" loading="lazy" width="600" height="400">
+        </div>
+        <div class="split-text">
+          <h2><%= home.whyTitle %></h2>
+          <p class="section-lede"><%= home.whyIntro %></p>
+          <ul class="check-list">
+            <% home.why.forEach(function(item){ %>
+              <li><%- include('partials/icon', { name: 'check' }) %><span><%= item %></span></li>
+            <% }); %>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS PREVIEW -->
+    <section class="section section--muted">
+      <div class="container">
+        <div class="section-head section-head--center">
+          <h2>What people say</h2>
+          <p class="section-lede">A few words from the businesses and leaders Michael has worked with.</p>
+        </div>
+        <div class="testimonial-grid">
+          <% testimonials.slice(0,2).forEach(function(t){ %>
+            <figure class="testimonial-card">
+              <blockquote><%= t.quote %></blockquote>
+              <figcaption>
+                <span class="t-author"><%= t.author %></span>
+                <% if (t.title) { %><span class="t-title"><%= t.title %></span><% } %>
+              </figcaption>
+            </figure>
+          <% }); %>
+        </div>
+        <p class="center-link"><a href="/testimonials" class="text-link">Read all testimonials <%- include('partials/icon', { name: 'arrow' }) %></a></p>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section faq">
+      <div class="container narrow">
+        <div class="section-head section-head--center">
+          <h2>Frequently asked questions</h2>
+        </div>
+        <% faqs.forEach(function(f, i){ %>
+          <details class="faq-item"<%= i === 0 ? ' open' : '' %>>
+            <summary><%= f.question %></summary>
+            <div class="faq-answer"><p><%= f.answer %></p></div>
+          </details>
+        <% }); %>
+      </div>
+    </section>
+
+    <%- include('partials/cta', { cta: home.finalCta }) %>
+
+  </main>
+  <%- include('partials/footer') %>
+</body>
+</html>

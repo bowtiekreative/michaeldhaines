@@ -1,0 +1,31 @@
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <img src="<%= site.logo %>" alt="" width="56" height="36">
+      <p class="footer-tagline">“<%= site.tagline %>”</p>
+      <p class="footer-meta"><%= site.city %>, <%= site.region %>, <%= site.country %></p>
+    </div>
+    <nav class="footer-nav" aria-label="Footer">
+      <h2 class="footer-heading">Explore</h2>
+      <ul>
+        <% nav.forEach(function(item){ %>
+          <li><a href="<%= item.href %>"><%= item.label %></a></li>
+        <% }); %>
+        <li><a href="/privacy">Privacy</a></li>
+      </ul>
+    </nav>
+    <div class="footer-cta">
+      <h2 class="footer-heading">Ready to begin?</h2>
+      <p>Book a free 30-minute consultation and challenge your business to be great.</p>
+      <a href="<%= site.calendly %>" class="btn btn--primary" target="_blank" rel="noopener">Book a Free Consultation</a>
+      <p class="footer-contact"><a href="mailto:<%= site.email %>"><%= site.email %></a></p>
+    </div>
+  </div>
+  <div class="footer-bar">
+    <div class="container footer-bar-inner">
+      <p>&copy; <%= new Date().getFullYear() %> <%= site.name %>. All rights reserved.</p>
+      <a class="back-to-top" href="#start">Back to top ↑</a>
+    </div>
+  </div>
+</footer>
+<script src="/js/main.js?v=<%= assetVersion('js/main.js') %>" defer></script>

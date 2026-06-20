@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('partials/head') %>
+  <script type="application/ld+json">
+  <%- JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": post.title,
+    "datePublished": (post.date instanceof Date ? post.date.toISOString().slice(0,10) : post.date),
+    "author": { "@type": "Person", "name": site.name },
+    "publisher": { "@type": "Organization", "name": site.name },
+    "mainEntityOfPage": canonical
+  }) %>
+  </script>
+</head>
+<body>
+  <%- include('partials/header') %>
+  <main id="main">
+    <article class="section">
+      <div class="container narrow">
+        <nav class="breadcrumb breadcrumb--light" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="/">Home</a></li>
+            <li><a href="/insights">Insights</a></li>
+            <li aria-current="page"><a href="/insights/<%= post.slug %>"><%= post.title %></a></li>
+          </ol>
+        </nav>
+        <header class="article-head">
+          <time datetime="<%= (post.date instanceof Date ? post.date.toISOString().slice(0,10) : post.date) %>" class="post-date">
+            <%= new Date(post.date).toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' }) %>
+          </time>
+          <h1><%= post.title %></h1>
+        </header>
+        <div class="article-body">
+          <% post.body.forEach(function(para){ %>
+            <p><%= para %></p>
+          <% }); %>
+        </div>
+        <p class="center-link"><a href="/insights" class="text-link">← Back to all insights</a></p>
+      </div>
+    </article>
+
+    <%- include('partials/cta', { cta: {
+      title: 'Challenge yourself and be great',
+      text: 'Book a free consultation with Michael today.',
+      ctaLabel: 'Book a Free Consultation',
+      ctaHref: site.calendly
+    } }) %>
+  </main>
+  <%- include('partials/footer') %>
+</body>
+</html>
